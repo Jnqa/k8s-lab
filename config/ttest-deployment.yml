@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ttestbot
+  labels:
+    app: ttestbot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ttestbot
+  template:
+    metadata:
+      labels:
+        app: ttestbot
+    spec:
+      containers:
+        - name: ttestbot
+          env:
+            - name: envtest
+              valueFrom:
+                configMapKeyRef:
+                  name: ttestmap
+                  key: envtest
+          image: docker.pkg.github.com/jnqa/ttest/ttestbot:latest
+          ports:
+            - containerPort: 3048
+          livenessProbe:
+            httpGet:
+              path: localhost
+              port: 3048
+            initialDelaySeconds: 10
+            periodSeconds: 3
+
+      imagePullSecrets:
+        - name: dockerconfigjson-github-com

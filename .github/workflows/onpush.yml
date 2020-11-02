@@ -1,0 +1,21 @@
+name: Pushka
+on: 
+  push:
+    branches:
+      - master
+      - main
+jobs:
+  push_to_registry:
+    name: Push updates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Test 
+        run: sudo apt update && sudo apt install kubectl
+      - name: deployment
+        run: kubectl apply -f config/ttest-deployment.yml || echo 'ERRORISHE'
+      - name: conf
+        run: kubectl apply -f config/ttest-configurator.yml || echo 'ERRORISHE C'
+      - name: secr
+        run: kubectl apply -f config/kube-secrets.yml || echo 'ERRORISHE S'
