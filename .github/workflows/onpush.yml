@@ -12,12 +12,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Test 
-        run: sudo apt update && sudo apt install kubectl && sudo apt install minikube && minikube start
+        run: sudo apt update && sudo apt install kubectl
       - name: deployment
         run: kubectl apply -f config/ttest-deployment.yml 
       - name: conf
         run: kubectl apply -f config/ttest-configurator.yml 
       - name: secr
         run: kubectl apply -f config/kube-secrets.yml 
-      - name: minikube delete
-        run: minikube delete
